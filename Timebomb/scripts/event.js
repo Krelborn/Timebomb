@@ -71,6 +71,11 @@ function stop() {
  *  Callback for when the timer period expires
  */
 function handleTimerExpired() {
+	var myAudio = new Audio();
+	myAudio.src = "sounds/Chewbacca.mp3";
+	myAudio.loop = false;
+	myAudio.play();
+	
 	stop();
 	chrome.browserAction.setBadgeText({text: "0s"});
 }
