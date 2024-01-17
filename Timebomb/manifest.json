@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Timebomb",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "30 second countdown timer",
   "icons": {
     "16": "icons/icon16.png",
@@ -13,5 +13,14 @@
   },
   "action": {
     "icon": "icons/icon19.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "js": ["scripts/page.js"],
+      "run_at": "document_start",
+      "matches": ["<all_urls>"],
+      "match_about_blank": true,
+      "all_frames": true
+    }
+  ]
 }

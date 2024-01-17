@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="start()">Start</button>
+    <button onclick="stop()">Stop</button>
+    <button onclick="resume()">Resume</button>
+    <script>
+      window.dispatchEvent(
+        new CustomEvent("timebombCommand", { detail: { command: "start" } })
+      );
+
+      function start() {
+        window.dispatchEvent(
+          new CustomEvent("timebombCommand", {
+            detail: { command: "start" },
+          })
+        );
+      }
+
+      function stop() {
+        window.dispatchEvent(
+          new CustomEvent("timebombCommand", { detail: { command: "stop" } })
+        );
+      }
+
+      function resume() {
+        window.dispatchEvent(
+          new CustomEvent("timebombCommand", {
+            detail: { command: "resume" },
+          })
+        );
+      }
+    </script>
+  </body>
+</html>

@@ -1,9 +1,9 @@
-var started = null;
-var timerLengthInSeconds = 30.0;
-var lastElapsedLengthInSeconds;
+const timerLengthInSeconds = 30.0;
+let started = null;
+let lastElapsedLengthInSeconds;
 
-var tickId;
-var timerId;
+let tickId;
+let timerId;
 
 /**
  *  @return The time since the timer was started
@@ -25,7 +25,7 @@ function remainingTime() {
  *  @param  time Time to set the timer's end time relative to (optional, defaults to Date.now())
  */
 function start(time) {
-  var remainingTimeInSeconds = timerLengthInSeconds;
+  let remainingTimeInSeconds = timerLengthInSeconds;
 
   // Record our start time
   if (time == undefined) {
@@ -42,7 +42,9 @@ function start(time) {
 
   // Start ticking to update the counter every second
   tickId = setInterval(function () {
-    updateCounter();
+    if (started !== null) {
+      updateCounter();
+    }
   }, 1000);
 
   updateCounter();
@@ -82,7 +84,7 @@ function handleUserStopped() {
  *  Called on a repeating interval to update the timer display on the browser action button
  */
 function updateCounter() {
-  var remainingTimeInSeconds = remainingTime();
+  const remainingTimeInSeconds = remainingTime();
 
   if (remainingTimeInSeconds > 10) {
     chrome.action.setBadgeBackgroundColor({ color: [0, 255, 0, 255] });
@@ -110,3 +112,16 @@ function toggleTimer(tab) {
 
 // Set our action when our button is clicked
 chrome.action.onClicked.addListener(toggleTimer);
+
+// Listen for commands from the page
+chrome.runtime.onConnect.addListener(function (port) {
+  port.onMessage.addListener(function (msg) {
+    if (msg.message == "start") {
+      start();
+    } else if (msg.message == "stop") {
+      stop();
+    } else if (msg.message == "resume") {
+      start(Date.now() - lastElapsedLengthInSeconds * 1000);
+    }
+  });
+});
